@@ -1,0 +1,14 @@
+version: "3.4"
+services:
+    mongo_db:
+        container_name: mongo_wish_list
+        image: mongo:3.4
+        restart: always
+        command: mongod --port 37017 --maxConns 10000 --smallfiles
+        volumes:
+            - mongo_wish_list_db:/data/db
+        ports:
+            - "37017:37017"
+volumes:
+    mongo_wish_list_db:
+        driver: local

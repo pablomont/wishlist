@@ -1,0 +1,19 @@
+server:
+    port: 8080
+    compression:
+        enabled: true
+        mime-types: application/json
+spring:
+    application:
+        name: ms-wishlist
+    data:
+        mongodb:
+            uri: ${WISHLIST_MONGODB_URI}
+            auto-index-creation: true
+springdoc:
+    packagesToScan: com.wishlist.entrypoint
+    pathsToMatch: /**
+    swagger-ui:
+        disable-swagger-default-url: true
+        doc-expansion: none
+        tagsSorter: alpha
