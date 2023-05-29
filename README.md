@@ -5,6 +5,6 @@ This microservice uses Clean Architecture:
 
 How this microservice is divided?
 
-![drawing](docs/simple-clean-arch.webp)
+![drawing](src/main/resources/static/simple-clean-arch.webp)
 
 Every UseCase uses a Gateway Interface which is implemented by Dataprovider. 
