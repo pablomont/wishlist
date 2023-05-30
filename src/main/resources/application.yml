@@ -11,7 +11,7 @@ spring:
             uri: ${WISHLIST_MONGODB_URI}
             auto-index-creation: true
 springdoc:
-    packagesToScan: com.wishlist.entrypoint
+    packagesToScan: com.wishlist.api.entrypoint
     pathsToMatch: /**
     swagger-ui:
         disable-swagger-default-url: true
