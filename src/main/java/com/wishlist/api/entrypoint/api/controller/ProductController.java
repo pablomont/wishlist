@@ -19,7 +19,7 @@ public interface ProductController {
     @Operation(
         tags = "Product",
         summary = "Remover um produto da Wishlist do cliente")
-    ResponseEntity<Void> removeProductToWishlist(final String productId);
+    ResponseEntity<Void> removeProductToWishlist(final String productName);
 
     @Operation(
         tags = "Product",
@@ -29,6 +29,6 @@ public interface ProductController {
     @Operation(
         tags = "Product",
         summary = "Consultar se um determinado produto está na Wishlist do cliente")
-    ResponseEntity<ProductDTO> getProductInWishlist(final String productId);
+    ResponseEntity<ProductDTO> getProductInWishlist(final String productName);
 
 }
