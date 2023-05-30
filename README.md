@@ -1,5 +1,7 @@
 # Getting Started
 
+A Spring Boot application with Java 17 responsible for managing a customer's wishlist.
+
 # This microservice uses Clean Architecture
 - [What is Clean Architecture?](https://medium.com/luizalabs/descomplicando-a-clean-architecture-cf4dfc4a1ac6)
 
