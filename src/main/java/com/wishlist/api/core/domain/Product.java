@@ -6,10 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
-@Builder
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Builder
 public class Product {
-    private String name;
-    private Double value;
+    private final String name;
+    private final Double value;
+
 }

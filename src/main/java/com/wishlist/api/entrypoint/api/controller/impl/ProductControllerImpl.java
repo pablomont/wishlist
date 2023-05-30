@@ -8,6 +8,7 @@ import com.wishlist.api.entrypoint.api.controller.ProductController;
 import com.wishlist.api.entrypoint.api.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +36,7 @@ public class ProductControllerImpl implements ProductController {
     @PostMapping
     public ResponseEntity<Void> addProductToWishlist(@RequestBody final ProductDTO productDto) {
         addWishlistProductUseCase.execute(productDto.toDomain());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<List<ProductDTO>> getAllProductsInWishlist() {
         return ResponseEntity.ok(findWishlistProductsUseCase.execute().stream()
             .map(ProductDTO::new)
-            .collect(Collectors.toList()));
+            .toList());
     }
 
     @Override
