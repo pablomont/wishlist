@@ -1,7 +1,7 @@
 package com.wishlist.api.entrypoint.api.controller.impl;
 
 import com.wishlist.api.core.usecase.AddWishlistProductUseCase;
-import com.wishlist.api.core.usecase.FindWishlistProductUseCase;
+import com.wishlist.api.core.usecase.FindWishlistProductsByNameUseCase;
 import com.wishlist.api.core.usecase.FindWishlistProductsUseCase;
 import com.wishlist.api.core.usecase.RemoveWishlistProductUseCase;
 import com.wishlist.api.entrypoint.api.controller.ProductController;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,38 +28,40 @@ import java.util.List;
 public class ProductControllerImpl implements ProductController {
 
 
-    private final FindWishlistProductUseCase findWishlistProductUseCase;
+    private final FindWishlistProductsByNameUseCase findWishlistProductsByNameUseCase;
     private final FindWishlistProductsUseCase findWishlistProductsUseCase;
     private final AddWishlistProductUseCase addWishlistProductUseCase;
     private final RemoveWishlistProductUseCase removeWishlistProductUseCase;
 
     @Override
     @PostMapping
-    public ResponseEntity<Void> addProductToWishlist(@RequestBody final ProductDTO productDto) {
-        addWishlistProductUseCase.execute(productDto.toDomain());
+    public ResponseEntity<Void> addProductToWishlist(@RequestHeader("consumer_id") final String consumerId, @RequestBody final ProductDTO productDto) {
+        addWishlistProductUseCase.execute(productDto.toDomain(), consumerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    @DeleteMapping
-    public ResponseEntity<Void> removeProductToWishlist(@PathVariable final String productName) {
+    @DeleteMapping(value = "/{productName}")
+    public ResponseEntity<Void> removeProductToWishlist(@RequestHeader("consumer_id") final String consumerId, @PathVariable final String productName) {
 
-        removeWishlistProductUseCase.execute(productName);
+        removeWishlistProductUseCase.execute(consumerId, productName);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProductsInWishlist() {
-        return ResponseEntity.ok(findWishlistProductsUseCase.execute().stream()
+    public ResponseEntity<List<ProductDTO>> getAllProductsInWishlist(@RequestHeader("consumer_id") final String consumerId) {
+        return ResponseEntity.ok(findWishlistProductsUseCase.execute(consumerId).stream()
             .map(ProductDTO::new)
             .toList());
     }
 
     @Override
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<ProductDTO> getProductInWishlist(@PathVariable final String productName) {
-        return ResponseEntity.ok(new ProductDTO(findWishlistProductUseCase.execute(productName)));
+    @GetMapping(path = "/{productName}")
+    public ResponseEntity<List<ProductDTO>> getProductsInWishlistByName(@RequestHeader("consumer_id") final String consumerId, @PathVariable final String productName) {
+        return ResponseEntity.ok(findWishlistProductsByNameUseCase.execute(consumerId,productName).stream()
+            .map(ProductDTO::new)
+            .toList());
     }
 
 }

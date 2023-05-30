@@ -1,8 +1,8 @@
 package com.wishlist.api.entrypoint.api.controller.impl;
 
-import com.wishlist.api.core.domain.Product;
+import com.wishlist.api.core.domain.WishlistProduct;
 import com.wishlist.api.core.usecase.AddWishlistProductUseCase;
-import com.wishlist.api.core.usecase.FindWishlistProductUseCase;
+import com.wishlist.api.core.usecase.FindWishlistProductsByNameUseCase;
 import com.wishlist.api.core.usecase.FindWishlistProductsUseCase;
 import com.wishlist.api.core.usecase.RemoveWishlistProductUseCase;
 import com.wishlist.api.entrypoint.api.dto.ProductDTO;
@@ -28,10 +28,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductControllerImplTest {
+class WishlistProductControllerImplTest {
 
     @Mock
-    private FindWishlistProductUseCase findWishlistProductUseCase;
+    private FindWishlistProductsByNameUseCase findWishlistProductsByNameUseCase;
     @Mock
     private FindWishlistProductsUseCase findWishlistProductsUseCase;
     @Mock
@@ -48,37 +48,37 @@ class ProductControllerImplTest {
     @Test
     @DisplayName("Should return all products")
     void testFindWishlistProducts() {
-        final var productOne = easyRandom.nextObject(Product.class);
-        final var productTwo = easyRandom.nextObject(Product.class);
-        when(findWishlistProductsUseCase.execute()).thenReturn(List.of(productOne, productTwo));
+        final var productOne = easyRandom.nextObject(WishlistProduct.class);
+        final var productTwo = easyRandom.nextObject(WishlistProduct.class);
+        when(findWishlistProductsUseCase.execute(anyString())).thenReturn(List.of(productOne, productTwo));
 
-        final var output = productController.getAllProductsInWishlist().getBody();
-        verify(findWishlistProductsUseCase, only()).execute();
+        final var output = productController.getAllProductsInWishlist("123").getBody();
+        verify(findWishlistProductsUseCase, only()).execute(anyString());
         assertEquals(2, output.size());
     }
 
     @Test
     @DisplayName("Should return a specific product")
     void testFindWishlistProduct() {
-        final var product = easyRandom.nextObject(Product.class);
-        when(findWishlistProductUseCase.execute(anyString())).thenReturn(product);
+        final var product = easyRandom.nextObject(WishlistProduct.class);
+        when(findWishlistProductsByNameUseCase.execute(anyString(), anyString())).thenReturn(List.of(product));
 
-        final var output = productController.getProductInWishlist("iphone xr").getBody();
-        verify(findWishlistProductUseCase, only()).execute(anyString());
-        assertEquals(product.getName(), output.name());
+        final var output = productController.getProductsInWishlistByName("123","iphone xr").getBody();
+        verify(findWishlistProductsByNameUseCase, only()).execute(anyString(), anyString());
+        assertEquals(product.getName(), output.get(0).name());
     }
 
     @Test
     @DisplayName("Should return a success status code")
     void testAddWishlistProduct() {
-        final var product = easyRandom.nextObject(Product.class);
+        final var product = easyRandom.nextObject(WishlistProduct.class);
         var productDTO = new ProductDTO(product);
 
-        doNothing().when(addWishlistProductUseCase).execute(any());
+        doNothing().when(addWishlistProductUseCase).execute(any(), anyString());
 
-        var statusCode = productController.addProductToWishlist(productDTO).getStatusCode();
+        var statusCode = productController.addProductToWishlist("1", productDTO ).getStatusCode();
 
-        verify(addWishlistProductUseCase, only()).execute(any());
+        verify(addWishlistProductUseCase, only()).execute(any(), anyString());
         assertEquals(HttpStatus.CREATED, statusCode);
     }
 
@@ -86,11 +86,11 @@ class ProductControllerImplTest {
     @DisplayName("Should return a no content status code")
     void testRemoveWishlistProduct() {
 
-        doNothing().when(removeWishlistProductUseCase).execute(any());
+        doNothing().when(removeWishlistProductUseCase).execute(anyString(), any());
 
-        var statusCode = productController.removeProductToWishlist("iphone xr").getStatusCode();
+        var statusCode = productController.removeProductToWishlist("123","iphone xr").getStatusCode();
 
-        verify(removeWishlistProductUseCase, only()).execute(any());
+        verify(removeWishlistProductUseCase, only()).execute(anyString(), any());
         assertEquals(HttpStatus.NO_CONTENT, statusCode);
     }
 

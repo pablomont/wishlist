@@ -11,7 +11,7 @@
 
 #### To view the endpoints exposed by this service access the url
 ``` 
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/wishlist/swagger-ui/index.html
 ```
 
 #### Before start the application, run the docker command below to start mongodb

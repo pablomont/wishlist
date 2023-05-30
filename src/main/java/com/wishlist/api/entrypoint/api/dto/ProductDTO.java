@@ -1,7 +1,9 @@
 package com.wishlist.api.entrypoint.api.dto;
 
-import com.wishlist.api.core.domain.Product;
+import com.wishlist.api.core.domain.WishlistProduct;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.math.BigDecimal;
 
 public record ProductDTO(
 
@@ -10,14 +12,14 @@ public record ProductDTO(
     @Schema(description = "Valor do produto", example = "4.599")
     String value) {
 
-    public ProductDTO(final Product product) {
-        this(product.getName(), product.getValue().toString());
+    public ProductDTO(final WishlistProduct wishlistProduct) {
+        this(wishlistProduct.getName(), wishlistProduct.getValue().toString());
     }
 
-    public Product toDomain() {
-        return Product.builder()
+    public WishlistProduct toDomain() {
+        return WishlistProduct.builder()
             .name(name())
-            .value(Double.parseDouble(value()))
+            .value(new BigDecimal(value()))
             .build();
     }
 

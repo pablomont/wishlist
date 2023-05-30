@@ -1,6 +1,7 @@
 package com.wishlist.api.core.usecase;
 
-import com.wishlist.api.core.domain.Product;
+import com.wishlist.api.core.domain.WishlistProduct;
+import com.wishlist.api.core.gateway.WishlistGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AddWishlistProductUseCase {
 
-    public void execute(Product product){
+    private final WishlistGateway wishlistGateway;
 
+    public void execute(WishlistProduct wishlistProduct, String consumerId){
+        wishlistGateway.createWishListProduct(wishlistProduct, consumerId);
     }
 
 }

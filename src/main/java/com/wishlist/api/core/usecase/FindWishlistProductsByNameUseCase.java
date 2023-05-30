@@ -13,15 +13,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FindWishlistProductsUseCase {
+public class FindWishlistProductsByNameUseCase {
 
     private final WishlistGateway wishlistGateway;
 
-    public List<WishlistProduct> execute(String consumerId){
+    public List<WishlistProduct> execute(String consumerId, String productName) {
 
         return wishlistGateway.findAllWishListProducts(consumerId)
-            .orElseThrow(() -> new WishlistException("Not found any product", HttpStatus.NOT_FOUND));
-
+            .map(wishlistProducts -> wishlistProducts.stream().filter(wishlistProduct -> wishlistProduct.getName().equals(productName)).toList())
+            .orElseThrow(() -> new WishlistException("Product not found", HttpStatus.NOT_FOUND));
     }
 
 }
