@@ -7,8 +7,6 @@
 
 ![drawing](src/main/resources/static/simple-clean-arch.webp)
 
-#### Every UseCase uses a Gateway Interface which is implemented by Dataprovider. 
-
 #### To view the endpoints exposed by this service access the url
 ``` 
 http://localhost:8080/swagger-ui/index.html
