@@ -14,7 +14,7 @@
 http://localhost:8080/swagger-ui/index.html
 ```
 
-#### 1. Before start the application, run the docker command below to start mongodb
+#### Before start the application, run the docker command below to start mongodb
 ```
 docker compose -f docker-compose.yaml up -d
 ```
