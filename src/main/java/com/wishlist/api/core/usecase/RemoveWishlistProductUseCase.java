@@ -13,6 +13,6 @@ public class RemoveWishlistProductUseCase {
     private final WishlistGateway wishlistGateway;
 
     public void execute(String consumerId, String productName){
-        wishlistGateway.deleteWishListProductById(consumerId, productName);
+        wishlistGateway.deleteWishListProductByName(consumerId, productName);
     }
 }

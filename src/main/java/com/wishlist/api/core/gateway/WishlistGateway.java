@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface WishlistGateway {
     void createWishListProduct(WishlistProduct wishlistProduct, String consumerId);
-    void deleteWishListProductById(String consumerId, String productName);
+    void deleteWishListProductByName(String consumerId, String productName);
     Optional<List<WishlistProduct>> findAllWishListProducts(String consumerId);
 }

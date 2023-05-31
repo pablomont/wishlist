@@ -27,7 +27,7 @@ public class WishlistGatewayImpl implements WishlistGateway {
     }
 
     @Override
-    public void deleteWishListProductById(final String consumerId, final String productName) {
+    public void deleteWishListProductByName(final String consumerId, final String productName) {
         log.info("Deleting wishlistProduct in database, name: {}", productName);
         wishlistRepository.pullWishListProduct(consumerId, WishlistProductEntity.builder().name(productName).build());
     }
