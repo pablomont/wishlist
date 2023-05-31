@@ -19,9 +19,16 @@ public class FindWishlistProductsByNameUseCase {
 
     public List<WishlistProduct> execute(String consumerId, String productName) {
 
-        return wishlistGateway.findAllWishListProducts(consumerId)
-            .map(wishlistProducts -> wishlistProducts.stream().filter(wishlistProduct -> wishlistProduct.getName().equals(productName)).toList())
+        var products = wishlistGateway.findAllWishListProducts(consumerId)
+            .map(wishlistProducts -> wishlistProducts.stream()
+                .filter(wishlistProduct -> wishlistProduct.getName().equals(productName))
+                .toList())
             .orElseThrow(() -> new WishlistException("Product not found", HttpStatus.NOT_FOUND));
+
+        if (products.isEmpty())
+            throw new WishlistException("Product not found", HttpStatus.NOT_FOUND);
+
+        return products;
     }
 
 }
